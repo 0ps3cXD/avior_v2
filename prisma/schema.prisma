@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  username String @unique
+  id String @unique
+}
+
+model Team {
+  username String @unique
+  id String @unique
+  permissionlevel Int
+}
+
+model Locked {
+  id String @unique
+  locked Boolean
+}
+
+model TemporaryVoice {
+  id String @unique
+  name String @unique
+  owner String @unique // id
+}
