@@ -3,6 +3,14 @@ import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
 
+/* 
+Ticket System fehlt noch Transkript
+Voice System nicht full, es fehlen lockvc, max vc members und so
+LevelSystem muss noch
+Moderations System muss ganz dringend noch
+Bot Lock fixxen
+*/
+
 dotenv.config();
 
 const client = new Client({
@@ -27,4 +35,14 @@ for (const file of eventFiles) {
         client.on(event.name, (...args) => event.execute(...args, client));
     }
 }
+
 client.login(process.env.TOKEN)
+
+/*
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+const main = async() => {
+    await prisma.temporaryVoice.deleteMany();
+}
+
+main().then()*/

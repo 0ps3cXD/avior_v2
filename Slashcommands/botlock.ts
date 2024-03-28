@@ -1,37 +1,45 @@
-import { Client, ContextMenuInteraction, MessageEmbed } from "discord.js";
 import { PrismaClient } from "@prisma/client";
+import {Client, CommandInteraction, Interaction, MessageEmbed} from "discord.js";
 
 module.exports = {
-    name: "Bot Lock",
-    type: "USER",
-    async execute(interaction: ContextMenuInteraction, client: Client) {
+    name: "botlock",
+    description: "Blockiert die Anfragen des Users an den Bot...",
+    options: [
+        { type: "target", name: "user", description: "User der gesperrt werden soll...", required: true },
+        { type: "string", name: "reason", description: "Grund der Sperre", required: false }
+    ],
+    async execute(interaction: CommandInteraction, client: Client) {
         const prisma = new PrismaClient();
-        let userid = interaction.targetId;
-        let status = await prisma.locked.findUnique({ where: { id: userid }})
+        const target = interaction.options.getUser("user");
+        let status = await prisma.locked.findUnique({ where: { id: target?.id! }})
         if (status) {
             if (!status.locked) {
-                await prisma.locked.update({ where: { id: userid }, data: { id: userid, locked: true}})
+                let reason = interaction.options.getString("reason") || "Kein Grund angegeben";
+                await prisma.locked.update({ where: { id: target?.id! }, data: { id: target?.id!, locked: true}})
                 try {
                     let embed = new MessageEmbed()
+                    .setAuthor({ name: target?.username!, iconURL: target?.avatarURL()! })
                     .setTitle("Du wurdest gesperrt!")
                     .setDescription("Du wurdest von unserem Team aus dem Bot-Netzwerk gesperrt!")
                     .setColor("RED")
                     .addFields([
                         { name: "Moderator", value: `<@${interaction.user.id}>`},
+                        { name: "Grund", value: reason }
                     ])
                     .setFooter({ text: "Avior", iconURL: interaction.guild?.iconURL()! })
                 
-                    let user = client.users.cache.get(userid);
-                    await interaction.reply({ content: `User wurde gesperrt!`, ephemeral: true });
+                    let user = client.users.cache.get(target?.id!);
                     await user?.send({ embeds: [embed] });
+                    await interaction.reply({ content: `${target?.username} wurde gesperrt!`, ephemeral: true });
                 }catch (ex: any){
                     console.log(ex.toString());
                 }
                 
             }else {
-                await prisma.locked.update({ where: { id: userid }, data: { locked: false }});
+                await prisma.locked.update({ where: { id: target?.id! }, data: { locked: false }});
                 try {
                     let embed = new MessageEmbed()
+                    .setAuthor({ name: target?.username!, iconURL: target?.avatarURL()! })
                     .setTitle("Du wurdest entsperrt!")
                     .setDescription("Deine Sperre gegenüber des Bot-Netzwerkes wurde aufgehoben!")
                     .setColor("GREEN")
@@ -40,9 +48,9 @@ module.exports = {
                     ])
                     .setFooter({ text: "Avior", iconURL: interaction.guild?.iconURL()! })
                 
-                    let user = client.users.cache.get(userid);
+                    let user = client.users.cache.get(target?.id!);
                     await user?.send({ embeds: [embed] });
-                    await interaction.reply({ content: `User wurde entsperrt!`, ephemeral: true });
+                    await interaction.reply({ content: `${target?.username} wurde entsperrt!`, ephemeral: true });
                 }catch (ex: any){
                     console.log(ex.toString());
                 }
@@ -51,23 +59,26 @@ module.exports = {
         }else {
             await prisma.locked.create({
                 data: {
-                    id: userid,
+                    id: target?.id!,
                     locked: true
                 }
             })
+            let reason = interaction.options.getString("reason") || "Kein Grund angegeben";
             try {
                 let embed = new MessageEmbed()
+                    .setAuthor({ name: target?.username!, iconURL: target?.avatarURL()! })
                     .setTitle("Du wurdest gesperrt!")
                     .setDescription("Du wurdest von unserem Team aus dem Bot-Netzwerk gesperrt!")
                     .setColor("RED")
                     .addFields([
                         { name: "Moderator", value: `<@${interaction.user.id}>`},
+                        { name: "Grund", value: reason }
                     ])
                     .setFooter({ text: "Avior", iconURL: interaction.guild?.iconURL()! })
                 
-                let user = client.users.cache.get(userid);
+                let user = client.users.cache.get(target?.id!);
                 await user?.send({ embeds: [embed] });
-                await interaction.reply({ content: `User wurde gesperrt!`, ephemeral: true });
+                await interaction.reply({ content: `${target?.username} wurde gesperrt!`, ephemeral: true });
             }catch (ex: any){
                 console.log(ex.toString());
             }

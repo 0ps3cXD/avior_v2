@@ -12,7 +12,10 @@ datasource db {
 
 model Users {
   username String @unique
+  displayname String
   id String @unique
+  avatarurl String
+  messagecount Int @default(0)
 }
 
 model Team {
@@ -28,6 +31,12 @@ model Locked {
 
 model TemporaryVoice {
   id String @unique
-  name String @unique
-  owner String @unique // id
+  name String
+  owner String @unique
+}
+
+model Ticket {
+  id String @unique
+  name String
+  interactor String 
 }
