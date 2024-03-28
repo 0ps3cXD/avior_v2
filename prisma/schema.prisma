@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
+model User {
   username String @unique
   displayname String
   id String @unique
@@ -33,10 +33,16 @@ model TemporaryVoice {
   id String @unique
   name String
   owner String @unique
+  private Boolean @default(false)
 }
 
 model Ticket {
   id String @unique
   name String
   interactor String 
+}
+
+model Guild {
+  key String @unique
+  value String
 }

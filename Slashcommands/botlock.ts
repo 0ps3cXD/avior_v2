@@ -9,6 +9,7 @@ module.exports = {
         { type: "string", name: "reason", description: "Grund der Sperre", required: false }
     ],
     async execute(interaction: CommandInteraction, client: Client) {
+        if (interaction.member!.permissions != "ADMINISTRATOR") return;
         const prisma = new PrismaClient();
         const target = interaction.options.getUser("user");
         let status = await prisma.locked.findUnique({ where: { id: target?.id! }})

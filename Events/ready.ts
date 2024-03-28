@@ -37,18 +37,25 @@ module.exports = {
                 if (command.options) {
                     for (const option of command.options) {
                         switch (option.type) {
-                            case "string":
-                                commandBuilder.addStringOption(optionBuilder =>
-                                    optionBuilder.setName(option.name)
-                                                .setDescription(option.description)
-                                                .setRequired(option.required ?? false));
-                                break;
-                            case "target":
-                                commandBuilder.addUserOption(optionBuilder => 
-                                    optionBuilder.setName(option.name)
-                                                .setDescription(option.description)
-                                                .setRequired(option.required ?? false));
-                                break;
+                                case "string":
+                                    commandBuilder.addStringOption(optionBuilder =>
+                                        optionBuilder.setName(option.name)
+                                            .setDescription(option.description)
+                                            .setRequired(option.required ?? false));
+                                    break;
+                                case "target":
+                                    commandBuilder.addUserOption(optionBuilder =>
+                                        optionBuilder.setName(option.name)
+                                            .setDescription(option.description)
+                                            .setRequired(option.required ?? false));
+                                    break;
+                                case "integer":
+                                    commandBuilder.addIntegerOption(optionBuilder =>
+                                        optionBuilder.setName(option.name)
+                                            .setDescription(option.description)
+                                            .setRequired(option.required ?? false));
+                                    break;
+
                             default:
                                 console.log(`Unbekannter Optionstyp: ${option.type}`);
                         }

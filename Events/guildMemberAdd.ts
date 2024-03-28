@@ -7,7 +7,7 @@ module.exports = {
         let embed = new MessageEmbed();
         const prisma = new PrismaClient();
         try {
-            await prisma.users.create({
+            await prisma.user.create({
                 data: {
                     username: member.user.username,
                     displayname: member.displayName,

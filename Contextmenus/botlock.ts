@@ -5,6 +5,7 @@ module.exports = {
     name: "Bot Lock",
     type: "USER",
     async execute(interaction: ContextMenuInteraction, client: Client) {
+        if (interaction.member!.permissions != "ADMINISTRATOR") return;
         const prisma = new PrismaClient();
         let userid = interaction.targetId;
         let status = await prisma.locked.findUnique({ where: { id: userid }})

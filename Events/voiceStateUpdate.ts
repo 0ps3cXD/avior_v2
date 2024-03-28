@@ -32,6 +32,11 @@ module.exports = {
                     });
                 }
             }else if (oldState.channel?.parent?.id == process.env.VOICECAT! && oldState.channel?.members.size == 0 && oldState.channel.id != process.env.VOICECREATE!){
+                try {
+                    await prisma.temporaryVoice.delete({ where: { id: oldState.id }});
+                }catch (e) {
+                    console.log(e);
+                }
                 await oldState.channel.delete();
             }
         } catch (ex: any) {
