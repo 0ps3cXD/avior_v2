@@ -5,10 +5,8 @@ import dotenv from "dotenv";
 
 /* 
 Ticket System fehlt noch Transkript
-Voice System nicht full, es fehlen lockvc, max vc members und so
 LevelSystem muss noch
-Moderations System muss ganz dringend noch
-Bot Lock fixxen
+Moderations System muss ganz dringend noch fertig werden
 */
 
 dotenv.config();

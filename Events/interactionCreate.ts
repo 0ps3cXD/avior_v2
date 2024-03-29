@@ -1,12 +1,14 @@
 import { PrismaClient } from "@prisma/client";
-import {ButtonInteraction, Client, GuildChannel, GuildMember, Interaction, MessageActionRow, MessageActionRowComponentResolvable, MessageButton, MessageEmbed, Modal, ModalActionRowComponent, ModalSubmitInteraction, PermissionOverwrites, TextChannel, TextInputComponent} from "discord.js";
+import {ButtonInteraction, Client, GuildMember, Interaction, MessageActionRow, MessageButton, MessageEmbed, Modal, ModalActionRowComponent, ModalSubmitInteraction, TextChannel, TextInputComponent} from "discord.js";
 import fs from "fs";
 import path from "path";
+import { PasteClient, Publicity, ExpireDate } from "pastebin-api";
 
 module.exports = {
     name: "interactionCreate",
     async execute(interaction: Interaction, client: Client) {
         const prisma = new PrismaClient();
+        const pastebin = new PasteClient(process.env.PASTEBINKEY!);
         if (await prisma.locked.findUnique({ where: { id: interaction.user.id! }})) {
             await interaction.user.send("Du bist vom Bot-Netzwerk gesperrt!");
             return;
@@ -43,18 +45,32 @@ module.exports = {
                 let row = new MessageActionRow<ModalActionRowComponent>().setComponents(text);
                 modal.addComponents(row);
                 await interact.showModal(modal);
+
             }else if (interact.customId == "delete"){
                 await interaction.reply("Ticket wird gelöscht...");
                 setTimeout(async() => { await interact.channel?.delete() }, 3000);
+
             }else if (interact.customId == "close") {
                 await interact.reply("Ticket wird geschlossen...");
                 let interactor = await prisma.ticket.findUnique({ where: { id: interact.channel?.id! }});
                 let channel = await client.guilds.cache.get(process.env.GUILDID!)?.channels.cache.get(interact.channel?.id!) as TextChannel;
                 await channel.setName(`closed-${interactor?.interactor!}`);
                 await channel.permissionOverwrites.edit(interactor?.interactor!.toString()!, { VIEW_CHANNEL: false });
+            
             }else if (interact.customId == "transcript"){
                 await interact.reply("Transkript wird erstellt...");
-                // need to add the fuckin transcript
+                let channelContent = (await interact.channel?.messages.fetch()!);
+                let content =  "";
+                channelContent.reverse().forEach((message) => {content+=`${message.author.id} > ${message.content}\n`})
+                const url = await pastebin.createPaste({
+                    code: content,
+                    expireDate: ExpireDate.Never,
+                    format: "javascript",
+                    name: `${(await prisma.ticket.findUnique({ where: { id: interact.channel?.id! } }))?.interactor}`,
+                    publicity: Publicity.Public,
+                  });
+                await interact.user.send({ content: `Transkript für dein Ticket wurde erstellt!\n${url}`})
+
             }
         }else if (interaction.isModalSubmit()){
             let interact = interaction as ModalSubmitInteraction;
@@ -77,9 +93,9 @@ module.exports = {
                 .addComponents(
                     new MessageButton()
                     .setCustomId("delete")
-                    .setLabel("Ticket schließen")
+                    .setLabel("Ticket löschen")
                     .setStyle("DANGER")
-                    .setEmoji("❌"),
+                    .setEmoji("🗑️"),
                     new MessageButton()
                     .setCustomId("close")
                     .setLabel("Schließen")
@@ -99,7 +115,7 @@ module.exports = {
                     interactor: interact.user.id!
                 }
             })
-            await interact.reply("Ticket erstellt: <#" + channel?.id + ">");
+            await interact.reply({ content: "Ticket erstellt: <#" + channel?.id + ">", ephemeral: true });
         }
     },
 }

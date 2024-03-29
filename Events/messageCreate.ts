@@ -7,10 +7,10 @@ module.exports = {
     name: "messageCreate",
     async execute(message: Message, client: Client) {
         if (message.author.bot) return;
-        if (!message.content.startsWith(process.env.PREFIX!)) return;
         const prisma = new PrismaClient();
         let messagesTotal = parseInt((await prisma.guild.findUnique({ where: { key: "messagesTotal" }}))!.value);
-        await prisma.guild.update({ where: { key: "messageTotal "}, data: { value: (messagesTotal+1).toString() }})
+        await prisma.guild.update({ where: { key: "messagesTotal" }, data: { value: (messagesTotal+1).toString() }})
+        if (!message.content.startsWith(process.env.PREFIX!)) return;
         if (await prisma.locked.findUnique({ where: { id: message.author.id }})) {
             let embed = new MessageEmbed()
                 .setAuthor({ name: "Avior", iconURL: message.guild?.iconURL()! })

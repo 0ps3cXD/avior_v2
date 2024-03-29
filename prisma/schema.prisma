@@ -18,12 +18,6 @@ model User {
   messagecount Int @default(0)
 }
 
-model Team {
-  username String @unique
-  id String @unique
-  permissionlevel Int
-}
-
 model Locked {
   id String @unique
   locked Boolean
