@@ -69,7 +69,9 @@ module.exports = {
                     name: `${(await prisma.ticket.findUnique({ where: { id: interact.channel?.id! } }))?.interactor}`,
                     publicity: Publicity.Public,
                   });
-                await interact.user.send({ content: `Transkript für dein Ticket wurde erstellt!\n${url}`})
+                let transchannel = interact.guild?.channels.cache.get(process.env.TICKETTRANS!) as TextChannel;
+                await transchannel.send({ content: `Transkript für ein Ticket wurde erstellt!\n${url}`});
+                await interact.user.send({ content: `Transkript für dein Ticket wurde erstellt!\n${url}`});
 
             }
         }else if (interaction.isModalSubmit()){
