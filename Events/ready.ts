@@ -55,9 +55,28 @@ module.exports = {
                                             .setDescription(option.description)
                                             .setRequired(option.required ?? false));
                                     break;
-
-                            default:
-                                console.log(`Unbekannter Optionstyp: ${option.type} + ${option.name}`);
+                                case "channel":
+                                    commandBuilder.addChannelOption(optionBuilder =>
+                                        optionBuilder.setName(option.name)
+                                            .setDescription(option.description)
+                                            .setRequired(option.required ?? false));
+                                case "role":
+                                    commandBuilder.addChannelOption(optionBuilder =>
+                                        optionBuilder.setName(option.name)
+                                            .setDescription(option.description)
+                                            .setRequired(option.required ?? false));
+                                case "boolean":
+                                    commandBuilder.addBooleanOption(optionBuilder =>
+                                        optionBuilder.setName(option.name)
+                                            .setDescription(option.description)
+                                            .setRequired(option.required ?? false));
+                                case "attachment":
+                                    commandBuilder.addAttachmentOption(optionBuilder =>
+                                        optionBuilder.setName(option.name)
+                                            .setDescription(option.description)
+                                            .setRequired(option.required ?? false));
+                                default:
+                                    console.log(`Unbekannter Optionstyp: ${option.type} | bei Command: ${option.name}`);
                         }
                     }
                 }
