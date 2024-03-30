@@ -57,7 +57,7 @@ module.exports = {
                                     break;
 
                             default:
-                                console.log(`Unbekannter Optionstyp: ${option.type}`);
+                                console.log(`Unbekannter Optionstyp: ${option.type} + ${option.name}`);
                         }
                     }
                 }
