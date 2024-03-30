@@ -7,7 +7,7 @@ module.exports = {
         { type: "target", name: "user", description: "User dessen Avatar geholt werden soll...", required: false },
     ],
     async execute(interaction: CommandInteraction, client: Client) {
-        let target = interaction.options.getUser("user");
+        let target = interaction.options.getUser("user")!;
         if (target == null) {
             let embed: MessageEmbed = new MessageEmbed()
                 .setAuthor({ name: interaction.user.displayName, iconURL: interaction.user.displayAvatarURL()! })
