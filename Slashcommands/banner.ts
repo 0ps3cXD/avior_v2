@@ -8,11 +8,13 @@ module.exports = {
     ],
     async execute(interaction: CommandInteraction, client: Client) {
         let target: User = interaction.options.getUser("user") ?? interaction.user;
+        const fullUser = await interaction.client.users.fetch(target.id, { force: true });
         if (target.banner){
+            const bannerUrl = target.bannerURL({ size: 4096, dynamic: true });
             let embed: MessageEmbed = new MessageEmbed()
                 .setAuthor({ name: interaction.user.displayName, iconURL: interaction.user.displayAvatarURL()! })
                 .setTitle(`${target.displayName}´s Avatar`)
-                .setImage(target.bannerURL()!)
+                .setImage(bannerUrl!)
                 .setFooter({ text: "Avior", iconURL: interaction.guild?.iconURL()! })
                 .setTimestamp()
             await interaction.reply({ embeds: [embed]})
