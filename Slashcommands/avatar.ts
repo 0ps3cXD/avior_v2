@@ -7,7 +7,7 @@ module.exports = {
         { type: "target", name: "user", description: "User dessen Avatar geholt werden soll...", required: false },
     ],
     async execute(interaction: CommandInteraction, client: Client) {
-        let target = interaction.options.getUser("user")! as User;
+        let target = interaction.options.getUser("user")!;
         if (target == null) {
             let embed: MessageEmbed = new MessageEmbed()
                 .setAuthor({ name: interaction.user.displayName, iconURL: interaction.user.displayAvatarURL()! })
@@ -17,11 +17,10 @@ module.exports = {
                 .setTimestamp()
             await interaction.reply({ embeds: [embed]})
         }else {
-        let user = interaction.options.getUser("target")!;
             let embed: MessageEmbed = new MessageEmbed()
                 .setAuthor({ name: interaction.user.displayName, iconURL: interaction.user.displayAvatarURL()! })
-                .setTitle(`${user.displayName!}´s Avatar`)
-                .setImage(user.displayAvatarURL()!)
+                .setTitle(`${target.displayName!}´s Avatar`)
+                .setImage(target.displayAvatarURL()!)
                 .setFooter({ text: "Avior", iconURL: interaction.guild?.iconURL()! })
                 .setTimestamp()
             await interaction.reply({ embeds: [embed]})
