@@ -20,7 +20,7 @@ module.exports = {
         let user = interaction.options.getUser("target")!;
             let embed: MessageEmbed = new MessageEmbed()
                 .setAuthor({ name: interaction.user.displayName, iconURL: interaction.user.displayAvatarURL()! })
-                .setTitle(`${user.displayName}´s Avatar`)
+                .setTitle(`${user.username}´s Avatar`)
                 .setImage(user.displayAvatarURL()!)
                 .setFooter({ text: "Avior", iconURL: interaction.guild?.iconURL()! })
                 .setTimestamp()
