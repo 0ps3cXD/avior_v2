@@ -8,7 +8,7 @@ module.exports = {
     name: "setchannellimit",
     description: "Setzt das Limit für deinen Channel neu...",
     options: [
-        { type: "INTEGER", name: "limit", description: "Limit für deinen Channel", required: true }
+        { type: "integer", name: "limit", description: "Limit für deinen Channel", required: true }
     ],
     async execute(interaction: CommandInteraction, client: Client) {
         try {

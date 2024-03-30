@@ -8,7 +8,7 @@ module.exports = {
     name: "transferownership",
     description: "Überträgt den Owner-Status auf den User...",
     options: [
-        { type: "user", name: "user", description: "User, der zum Owner ernannt werden soll", required: true }
+        { type: "target", name: "user", description: "User, der zum Owner ernannt werden soll", required: true }
     ],
     async execute(interaction: CommandInteraction, client: Client) {
         let member = interaction.member as GuildMember;
