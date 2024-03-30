@@ -13,7 +13,7 @@ module.exports = {
             const bannerUrl = target.bannerURL({ size: 4096, dynamic: true });
             let embed: MessageEmbed = new MessageEmbed()
                 .setAuthor({ name: interaction.user.displayName, iconURL: interaction.user.displayAvatarURL()! })
-                .setTitle(`${target.displayName}´s Avatar`)
+                .setTitle(`${target.displayName}´s Banner`)
                 .setImage(bannerUrl!)
                 .setFooter({ text: "Avior", iconURL: interaction.guild?.iconURL()! })
                 .setTimestamp()
