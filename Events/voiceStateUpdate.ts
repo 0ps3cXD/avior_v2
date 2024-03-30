@@ -6,6 +6,7 @@ module.exports = {
     async execute(oldState: VoiceState, newState: VoiceState, client: Client) {
         const prisma = new PrismaClient();
         try {
+            await new Promise(resolve => setTimeout(resolve, 1000));
             if (newState.channelId == process.env.VOICECREATE!) {
                     const prisma = new PrismaClient();
                     const voiceChannel = await client.guilds.cache.get(process.env.GUILDID!)?.channels.create(newState.member?.displayName!, {
