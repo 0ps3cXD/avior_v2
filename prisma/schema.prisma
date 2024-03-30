@@ -26,7 +26,7 @@ model Locked {
 model TemporaryVoice {
   id String @unique
   name String
-  owner String @unique
+  owner String
   private Boolean @default(false)
 }
 
