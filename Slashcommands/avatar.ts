@@ -1,4 +1,4 @@
-import {CommandInteraction, Client, MessageEmbed, GuildMember} from "discord.js";
+import {CommandInteraction, Client, MessageEmbed, GuildMember, User} from "discord.js";
 
 module.exports = {
     name: "avatar",
@@ -7,7 +7,7 @@ module.exports = {
         { type: "target", name: "user", description: "User dessen Avatar geholt werden soll...", required: false },
     ],
     async execute(interaction: CommandInteraction, client: Client) {
-        let target = interaction.options.getUser("user")!;
+        let target = interaction.options.getUser("user")! as User;
         if (target == null) {
             let embed: MessageEmbed = new MessageEmbed()
                 .setAuthor({ name: interaction.user.displayName, iconURL: interaction.user.displayAvatarURL()! })
@@ -20,7 +20,7 @@ module.exports = {
         let user = interaction.options.getUser("target")!;
             let embed: MessageEmbed = new MessageEmbed()
                 .setAuthor({ name: interaction.user.displayName, iconURL: interaction.user.displayAvatarURL()! })
-                .setTitle(`${user.username}´s Avatar`)
+                .setTitle(`${user.displayName!}´s Avatar`)
                 .setImage(user.displayAvatarURL()!)
                 .setFooter({ text: "Avior", iconURL: interaction.guild?.iconURL()! })
                 .setTimestamp()
