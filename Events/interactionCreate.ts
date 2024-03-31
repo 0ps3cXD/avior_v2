@@ -29,6 +29,7 @@ module.exports = {
                 return;
             }
         }else if (interaction.isCommand()) {
+            console.log(interaction.commandName.toLowerCase().trim().replace(" ", ""));
             try {
                 let commandname = interaction.commandName.toLowerCase().trim().replace(" ", "");
                 const command = require(path.join(__dirname, "../Slashcommands", commandname));
