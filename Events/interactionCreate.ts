@@ -18,7 +18,11 @@ module.exports = {
             try {
                 let formattedName = interaction.commandName.toLowerCase().trim().replace(' ', "");
                 const contextmenu = require(path.join(__dirname, "../Contextmenus", formattedName));
-                await contextmenu.execute(interaction, client);
+                try {
+                    await contextmenu.execute(interaction, client);
+                }catch (e) {
+                    console.log(e);
+                }
             }catch(ex) {
                 // @ts-ignore
                 console.log(ex.toString());
