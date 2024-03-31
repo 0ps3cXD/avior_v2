@@ -5,6 +5,7 @@ module.exports = {
     name: "voiceStateUpdate",
     async execute(oldState: VoiceState, newState: VoiceState, client: Client) {
         const prisma = new PrismaClient();
+        if (oldState.channelId == "1223781136040202403" || oldState.channelId == "1223781427389136936" || oldState.channelId == "1223794673651290183") return;
         try {
             await new Promise(resolve => setTimeout(resolve, 1000));
             if (newState.channelId == process.env.VOICECREATE!) {
