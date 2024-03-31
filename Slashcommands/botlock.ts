@@ -12,7 +12,11 @@ module.exports = {
         console.log("try exec botlock...");
         let authorid = interaction.user.id;
         let author = interaction.guild!.members.cache.get(authorid);
-        if (author?.roles.cache.some(role => role.id !== "1221431182479069216")) interaction.reply({ content:"Du bist dazu nicht berechtigt!", ephemeral: true });
+        if (author?.roles.cache.some(role => role.id !== "1221431182479069216")){
+            await interaction.reply({ content:"Du bist dazu nicht berechtigt!", ephemeral: true });
+            return;
+        }
+
         const prisma = new PrismaClient();
         try {
             console.log("es wird versucht!");
