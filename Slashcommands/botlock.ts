@@ -13,7 +13,7 @@ module.exports = {
         let authorid = interaction.user.id;
         let author = interaction.guild!.members!.cache.get(authorid)!;
         console.log(authorid + "\n" + author.roles.highest.id);
-        if (author?.roles.cache.get("1221431182479069216")){
+        if (!author?.roles.cache.some(role => role.id !== "1221431182479069216")){
             await interaction.reply({ content:"Du bist dazu nicht berechtigt!", ephemeral: true });
             return;
         }
