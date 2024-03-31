@@ -13,9 +13,11 @@ module.exports = {
         if (interaction.member!.permissions != "ADMINISTRATOR") return;
         const prisma = new PrismaClient();
         try {
+            console.log("es wird versucht!");
             const target = interaction.options.getUser("user");
             let status = await prisma.locked.findUnique({where: {id: target?.id!}})
             if (status) {
+                console.log("User in db")
                 if (!status.locked) {
                     let reason = interaction.options.getString("reason") || "Kein Grund angegeben";
                     await prisma.locked.update({where: {id: target?.id!}, data: {id: target?.id!, locked: true}})
@@ -60,6 +62,7 @@ module.exports = {
                 }
 
             } else {
+                console.log("user nicht in db")
                 await prisma.locked.create({
                     data: {
                         id: target?.id!,
