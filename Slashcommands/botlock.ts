@@ -9,6 +9,7 @@ module.exports = {
         { type: "string", name: "reason", description: "Grund der Sperre", required: false }
     ],
     async execute(interaction: CommandInteraction, client: Client) {
+        console.log("try exec botlock...");
         if (interaction.member!.permissions != "ADMINISTRATOR") return;
         const prisma = new PrismaClient();
         try {
