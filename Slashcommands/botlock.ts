@@ -15,6 +15,7 @@ module.exports = {
         try {
             console.log("es wird versucht!");
             const target = interaction.options.getUser("user");
+            console.log(target?.displayName);
             let status = await prisma.locked.findUnique({where: {id: target?.id!}})
             if (status) {
                 console.log("User in db")
