@@ -10,7 +10,7 @@ module.exports = {
     ],
     async execute(interaction: CommandInteraction, client: Client) {
         console.log("try exec botlock...");
-        if (interaction.member!.permissions != "ADMINISTRATOR") return;
+        if (interaction.member!.permissions != "BAN_MEMBERS") return;
         const prisma = new PrismaClient();
         try {
             console.log("es wird versucht!");
