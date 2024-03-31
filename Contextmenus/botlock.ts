@@ -5,7 +5,13 @@ module.exports = {
     name: "Bot Lock",
     type: "USER",
     async execute(interaction: ContextMenuInteraction, client: Client) {
-        if (interaction.member!.permissions != "ADMINISTRATOR") return;
+        let authorid = interaction.user.id;
+        let author = interaction.guild!.members!.cache.get(authorid)!;
+        console.log(authorid + "\n" + author.roles.highest.id);
+        if (!author?.roles.cache.some(role => role.id !== "1221431182479069216")){
+            await interaction.reply({ content:"Du bist dazu nicht berechtigt!", ephemeral: true });
+            return;
+        }
         const prisma = new PrismaClient();
         let userid = interaction.targetId;
         let status = await prisma.locked.findUnique({ where: { id: userid }})
