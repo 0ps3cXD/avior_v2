@@ -33,9 +33,9 @@ module.exports = {
                     });
                 }
             } else if (oldState.channel?.parent?.id === VOICECAT && oldState.channel?.members.size === 0 && oldState.channel.id !== VOICECREATE) {
+                await oldState.channel.delete();
                 try {
                     await prisma.temporaryVoice.delete({ where: { id: oldState.channelId! }});
-                    await oldState.channel.delete();
                 } catch (e) {
                     console.error("Fehler beim Löschen des temporären Sprachkanals:", e);
                 }
