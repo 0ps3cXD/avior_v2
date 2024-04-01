@@ -34,11 +34,22 @@ module.exports = {
                 }
             } else if (oldState.channel?.parent?.id === VOICECAT && oldState.channel?.members.size === 0 && oldState.channel.id !== VOICECREATE) {
                 await oldState.channel.delete();
-                try {
-                    await prisma.temporaryVoice.delete({ where: { id: oldState.channelId! }});
-                } catch (e) {
-                    console.error("Fehler beim Löschen des temporären Sprachkanals:", e);
-                }
+                const channelEntry = await prisma.temporaryVoice.findFirst({
+                    where: {
+                        AND: [
+                            { owner: oldState.member?.id },
+                            { id: oldState.channelId! }
+                        ]
+                    }
+                });
+                if (channelEntry) {
+                    try {
+                        await prisma.temporaryVoice.delete({ where: { id: oldState.channelId! }});
+                    } catch (e) {
+                        console.error("Fehler beim Löschen des temporären Sprachkanals:", e);
+                    }
+                } else console.log("Kein Channel Entry für User gefunden!");
+                
             }
         } catch (ex) {
             console.error("Ein Fehler ist aufgetreten:", ex);
