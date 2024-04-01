@@ -28,7 +28,7 @@ module.exports = {
                         data: {
                             id: voiceChannel.id,
                             name: voiceChannel.name,
-                            owner: member.id
+                            owner: newState.member?.user.id!
                         }
                     });
                 }
